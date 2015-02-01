@@ -1,0 +1,35 @@
+[Unit]
+Description=Configuration Service
+
+#our data volume must be ready
+After=confdata.service
+Requires=confdata.service
+
+
+[Service]
+EnvironmentFile=/etc/environment
+
+
+#kill any existing confd
+ExecStartPre=-/usr/bin/docker kill %n
+ExecStartPre=-/usr/bin/docker rm %n
+
+#preload container...this ensures we fail if our registry is down and we can't
+#obtain the build we're expecting
+ExecStartPre=/usr/bin/docker pull lordelph/confd-demo
+
+#we need to provide our confd container with the IP it can reach etcd
+#on, the docker socket so it send HUP signals to nginx, and our data volume
+ExecStart=/usr/bin/docker run --rm \
+  -e COREOS_PRIVATE_IPV4=${COREOS_PRIVATE_IPV4} \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --volumes-from=conf-data \
+  --name %n \
+  lordelph/confd-demo
+
+ExecStop=/usr/bin/docker stop -t 3 %n
+Restart=on-failure
+
+[X-Fleet]
+#we need to be on the same machine as confdata.service
+MachineOf=confdata.service

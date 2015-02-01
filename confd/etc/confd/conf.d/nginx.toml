@@ -1,0 +1,7 @@
+[template]
+src = "nginx.conf.tmpl"
+dest = "/etc/nginx/nginx.conf"
+keys = [
+    "/test",
+]
+reload_cmd = "/usr/bin/docker kill -s HUP nginx.service"

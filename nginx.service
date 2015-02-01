@@ -1,0 +1,20 @@
+[Unit]
+Description=Nginx Service
+After=confd.service
+
+#we won't want it to require the service - that would stop us restarting
+#it, which is safe
+#Requires=confd.service
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull nginx
+ExecStart=/usr/bin/docker run --name %n -p 80:80 --volumes-from=conf-data nginx
+ExecStop=/usr/bin/docker stop -t 3 %n
+Restart=on-failure
+
+[X-Fleet]
+#we need to be on the same machine as confdata
+MachineOf=confdata.service

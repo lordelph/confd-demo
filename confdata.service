@@ -1,0 +1,15 @@
+[Unit]
+Description=Configuration Data Volume Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+
+#we aren't a normal service, we just need to ensure that a data volume
+#exists, and create one if it doesn't
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStartPre=-/usr/bin/docker rm conf-data
+ExecStart=/usr/bin/docker run -v /etc/nginx --name conf-data nginx echo "created new data container"
