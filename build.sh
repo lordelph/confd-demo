@@ -6,7 +6,7 @@ DUSER=lordelph
 
 CONFD_IMAGE=${DUSER}/confd-demo
 
-cd confd
+cd confd-demo
 docker build --tag="$CONFD_IMAGE" .
 docker push $CONFD_IMAGE
 cd ..
