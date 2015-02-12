@@ -2,8 +2,9 @@
 
 This container is a demonstration of how run confd in
 a separate container from nginx. If uses a shared
-data volume for the nginx config, and the docker client
-to send a HUP signal to the nginx container.
+data volume for the nginx config, with the confd container
+using the Docker API to send a HUP signal to the nginx
+container.
 
 See this blog post for the full details
 

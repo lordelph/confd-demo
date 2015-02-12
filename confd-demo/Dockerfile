@@ -3,8 +3,7 @@ FROM ubuntu:14.04
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install curl && \
     curl -o /usr/bin/confd -L https://github.com/kelseyhightower/confd/releases/download/v0.7.1/confd-0.7.1-linux-amd64 && \
-    chmod 755 /usr/bin/confd && \
-    curl -sSL https://get.docker.com/ubuntu/ |  sh
+    chmod 755 /usr/bin/confd
 
 ADD etc/confd/ /etc/confd
 
