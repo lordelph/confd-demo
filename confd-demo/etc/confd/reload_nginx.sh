@@ -7,6 +7,6 @@
 #-v /var/run/docker.sock:/var/run/docker.sock
 
 #so instead, we send an http request over the domain socket
-echo -e "POST /containers/connect-lb-nginx/kill?signal=HUP HTTP/1.0\r\n" | \
+echo -e "POST /containers/nginx.service/kill?signal=HUP HTTP/1.0\r\n" | \
   nc -U /var/run/docker.sock
 
